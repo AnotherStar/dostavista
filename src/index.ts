@@ -205,10 +205,13 @@ class Dostavista {
 }
 
 export {
-    Dostavista,
     Delivery,
-    VehicleType,
-    Warning,
     DOSTAVISTA_BASE_URL_TEST,
     DOSTAVISTA_BASE_URL,
+    Dostavista,
+    Order,
+    OrderStatus,
+    Point,
+    VehicleType,
+    Warning,
 };

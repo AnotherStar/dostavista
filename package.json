@@ -1,6 +1,6 @@
 {
     "name": "dostavista",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "description": "API-клиент для работы с сервисом Достависта",
     "main": "dist/index.js",
     "scripts": {
