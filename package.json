@@ -1,0 +1,22 @@
+{
+    "name": "dostavista",
+    "version": "0.0.2",
+    "description": "API-клиент для работы с сервисом Достависта",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "nodemon dist/test.js"
+    },
+    "author": "AnotherStar",
+    "repository": {
+        "url": "git@github.com:AnotherStar/dostavista.git"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^18.14.6",
+        "axios": "^1.3.4",
+        "dotenv": "^16.0.3"
+    },
+    "peerDependencies": {
+        "axios": "*"
+    }
+}
