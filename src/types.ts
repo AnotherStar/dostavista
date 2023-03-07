@@ -78,3 +78,16 @@ export interface Delivery {
     /** Список товаров на точке. */
     packages: [];
 }
+
+export interface Point {
+    /** Полный адрес в формате: город, улица, дом. Максимум 350 символов. */
+    address: string;
+    /** Координаты точки (широта). */
+    latitude?: Coordinate;
+    /** Координаты точки (долгота). */
+    longitude?: Coordinate;
+    /** Ожидаемое время прибытия курьера на адрес (от). */
+    required_start_datetime?: Timestamp;
+    /** Ожидаемое время прибытия курьера на адрес (до). */
+    required_finish_datetime?: Timestamp;
+}

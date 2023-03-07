@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, isAxiosError } from 'axios';
-import { OrderStatus, VehicleType } from './enums.js';
-import { Delivery } from './types.js';
+import { OrderStatus, VehicleType, Warning } from './enums.js';
+import { Delivery, Point } from './types.js';
 
 const DOSTAVISTA_BASE_URL_TEST = 'https://robot.dostavista.ru/api/business/1.3';
 const DOSTAVISTA_BASE_URL = 'https://robotapitest.dostavista.ru/api/business/1.3';
@@ -10,50 +10,10 @@ export interface DostavistaOptions {
     isTest?: boolean;
 }
 
-export enum Warning {
-    'Неизвестная ошибка. Сообщите о проблеме на api@dostavista.ru.' = 'unexpected_error',
-    'Неизвестная версия API. На данный момент доступны версии 1.0, 1.1 и 1.2.' = 'invalid_api_version',
-    'Устаревшая версия API. Указанная в запросе версия API больше не поддерживается.' = 'required_api_upgrade',
-    'Превышено максимально допустимое число запросов к API.' = 'requests_limit_exceeded',
-    'В запросе требуется передать заголовок X-DV-Auth-Token с токеном для авторизации.' = 'required_auth_token',
-    'Некорректный токен в заголовке X-DV-Auth-Token.' = 'invalid_auth_token',
-    'Запрос должен быть отправлен HTTP методом GET.' = 'required_method_get',
-    'Запрос должен быть отправлен HTTP методом POST.' = 'required_method_post',
-    'Данные в теле POST запроса должны быть в формате JSON.' = 'invalid_post_json',
-    'В передаваемых параметрах содержатся ошибки. Подробный список ошибок можно найти в параметре ответа parameter_errors.' = 'invalid_parameters',
-    'Ваш договор присоединения ещё не одобрен (для юридических лиц).' = 'unapproved_contract',
-    'Сервис временно недоступен. Повторите запрос позже.' = 'service_unavailable',
-    'Вызов несуществующего метода API.' = 'invalid_api_method',
-    'Для вашего аккаунта не доступна функция «Выкупить товар на точке».' = 'buyout_not_allowed',
-    'Недостаточно денег на балансе для функции «Выкупить товар на точке».' = 'insufficient_balance_for_buyout',
-    'Заказ не может быть изменен.' = 'order_cannot_be_edited',
-    'Заказ не может быть отменен.' = 'order_cannot_be_canceled',
-    'Недостаточно средств на балансе. Пополните баланс.' = 'insufficient_balance',
-    'Сумма выкупа по активным заказам слишком велика. Для оформления нового заказа с учетом других активных заказов и доступного кредитного лимита недостаточно средств на балансе. Необходимо внести предоплату.' = 'buyout_amount_limit_exceeded',
-    'Маршрут не найден.' = 'route_not_found',
-    'Превышена максимально разрешенная сумма заказа.' = 'total_payment_amount_limit_exceeded',
-    'Заказ является копией недавнего заказа' = 'order_is_duplicate',
-    'Недостаточно средств на карте' = 'insufficient_funds',
-    'Оплата картой не удалась' = 'card_payment_failed',
-}
-
 export type Timestamp = Number;
 export type Coordinate = Number;
 
-export interface Point {
-    /** Полный адрес в формате: город, улица, дом. Максимум 350 символов. */
-    address: string;
-    /** Координаты точки (широта). */
-    latitude?: Coordinate;
-    /** Координаты точки (долгота). */
-    longitude?: Coordinate;
-    /** Ожидаемое время прибытия курьера на адрес (от). */
-    required_start_datetime?: Timestamp;
-    /** Ожидаемое время прибытия курьера на адрес (до). */
-    required_finish_datetime?: Timestamp;
-}
-
-export class Dostavista {
+class Dostavista {
     instance: AxiosInstance;
 
     constructor(private token: string, options: DostavistaOptions = {}) {
@@ -85,16 +45,24 @@ export class Dostavista {
     }
 
     /** Расчет стоимости доставки */
-    async calculateOrder() {}
+    async calculateOrder() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Создание заказа */
-    async createOrder() {}
+    async createOrder() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Редактирование заказа */
-    async editOrder() {}
+    async editOrder() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Отмена заказа */
-    async cancelOrder() {}
+    async cancelOrder() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Получение списка заказов */
     async getOrders() {
@@ -107,25 +75,39 @@ export class Dostavista {
     }
 
     /** Данные и местоположение курьера */
-    async getCourier() {}
+    async getCourier() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Данные клиентского профиля */
-    async getClient() {}
+    async getClient() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Привязанные банковские карты */
-    async getBankCards() {}
+    async getBankCards() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Получение списка интервалов */
-    async getDeliveryIntervals() {}
+    async getDeliveryIntervals() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Создание черновиков доставок */
-    async createDeliveries() {}
+    async createDeliveries() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Редактирование черновиков доставок */
-    async editDeliveries() {}
+    async editDeliveries() {
+        throw new Error('Not implemented yet!');
+    }
 
     /** Удаление черновиков доставок */
-    async deleteDeliveries() {}
+    async deleteDeliveries() {
+        throw new Error('Not implemented yet!');
+    }
 
     /**
      * Получение списка доставок
@@ -209,3 +191,5 @@ export class Dostavista {
             .then(response => response.data);
     }
 }
+
+export { Dostavista, Delivery, VehicleType, Warning };
