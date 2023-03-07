@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, isAxiosError } from 'axios';
 import { OrderStatus, VehicleType, Warning } from './enums.js';
-import { Delivery, Point } from './types.js';
+import { Delivery, Point, Order } from './types.js';
 
-const DOSTAVISTA_BASE_URL_TEST = 'https://robot.dostavista.ru/api/business/1.3';
-const DOSTAVISTA_BASE_URL = 'https://robotapitest.dostavista.ru/api/business/1.3';
+const DOSTAVISTA_BASE_URL = 'https://robot.dostavista.ru/api/business/1.3';
+const DOSTAVISTA_BASE_URL_TEST = 'https://robotapitest.dostavista.ru/api/business/1.3';
 
 export interface DostavistaOptions {
     baseURL?: string;
@@ -65,12 +65,24 @@ class Dostavista {
     }
 
     /** Получение списка заказов */
-    async getOrders() {
+    async getOrders(
+        params: {
+            /** Полный номер заказа или список номеров заказов для поиска. */
+            order_id?: number | number[];
+            /** Статус заказов для поиска. */
+            status?: OrderStatus;
+            /** Смещение в списке заказов (для постраничной навигации). */
+            offset?: number;
+            /** Возвращаемое число заказов. Максимум 50. */
+            count?: number;
+        } = {},
+    ) {
         return this.instance
             .get<{
-                orders: Delivery[];
+                is_successful: boolean;
+                orders: Order[];
                 orders_count: number;
-            }>('/orders')
+            }>('/orders', { params })
             .then(response => response.data);
     }
 
@@ -192,4 +204,11 @@ class Dostavista {
     }
 }
 
-export { Dostavista, Delivery, VehicleType, Warning };
+export {
+    Dostavista,
+    Delivery,
+    VehicleType,
+    Warning,
+    DOSTAVISTA_BASE_URL_TEST,
+    DOSTAVISTA_BASE_URL,
+};

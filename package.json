@@ -1,6 +1,6 @@
 {
     "name": "dostavista",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "description": "API-клиент для работы с сервисом Достависта",
     "main": "dist/index.js",
     "scripts": {
@@ -8,7 +8,7 @@
     },
     "author": "AnotherStar",
     "repository": {
-        "url": "git@github.com:AnotherStar/dostavista.git"
+        "url": "https://github.com/AnotherStar/dostavista.git"
     },
     "license": "ISC",
     "devDependencies": {
