@@ -67,7 +67,7 @@ export interface Order {
     // Требуемое число грузчиков (включая водителя).
     loaders_count: number;
     // Список адресов (точек) в заказе.
-    points: Point[];
+    points: OrderPoint[];
     // Общая стоимость заказа.
     payment_amount: Money;
     // Стоимость доставки.

@@ -1,19 +1,27 @@
 import axios, { AxiosInstance, isAxiosError } from 'axios';
 import { OrderStatus, VehicleType, Warning } from './enums.js';
-import { Delivery, Point, Order } from './types.js';
+import {
+    Order,
+    Delivery,
+    Point,
+    Coordinate,
+    Timestamp,
+    OrderType,
+    Money,
+    PaymentMethod,
+} from './types.js';
+export { Coordinate, Delivery, Order, OrderPoint, Point, Timestamp } from './types.js';
+export { OrderStatus, VehicleType, Warning } from './enums.js';
 
-const DOSTAVISTA_BASE_URL = 'https://robot.dostavista.ru/api/business/1.3';
-const DOSTAVISTA_BASE_URL_TEST = 'https://robotapitest.dostavista.ru/api/business/1.3';
+export const DOSTAVISTA_BASE_URL = 'https://robot.dostavista.ru/api/business/1.3';
+export const DOSTAVISTA_BASE_URL_TEST = 'https://robotapitest.dostavista.ru/api/business/1.3';
 
 export interface DostavistaOptions {
     baseURL?: string;
     isTest?: boolean;
 }
 
-export type Timestamp = Number;
-export type Coordinate = Number;
-
-class Dostavista {
+export class Dostavista {
     instance: AxiosInstance;
 
     constructor(private token: string, options: DostavistaOptions = {}) {
@@ -36,17 +44,57 @@ class Dostavista {
             const data = error.response?.data;
             if (!data) throw error;
 
-            console.log(data.parameter_errors);
-            if ('parameter_errors' in error) {
-            }
+            throw new Error(JSON.stringify(data));
+
+            // if ('parameter_errors' in error) console.log(data.parameter_errors);
+
+            // if ('parameter_warnings' in error) console.log(data.parameter_warnings);
 
             throw error.response;
         });
     }
 
     /** Расчет стоимости доставки */
-    async calculateOrder() {
-        throw new Error('Not implemented yet!');
+    async calculateOrder(data: {
+        // Тип заказа.
+        type: OrderType;
+        // Что везем. Максимум 5000 символов.
+        matter: string;
+        // Тип транспорта.
+        vehicle_type_id: VehicleType;
+        // Общий вес отправления, кг.
+        total_weight_kg: number;
+        // Сумма страховки.
+        insurance_amount: Money;
+        // Отправлять клиенту SMS уведомления о статусе заказа.
+        is_client_notification_enabled: boolean;
+        // Отправлять получателям SMS с интервалом прибытия и телефоном курьера.
+        is_contact_person_notification_enabled: boolean;
+        // Автоматически оптимизировать маршрут (адреса в заказе будут расставлены в оптимальном порядке).
+        is_route_optimizer_enabled: boolean;
+        // Требуемое число грузчиков (включая водителя). Максимум 11 человек.
+        loaders_count: number;
+        // Реквизиты для перевода выручки. Например, номер карты или Qiwi-кошелька. Максимум 300 символов.
+        backpayment_details: string;
+        // Нужно ли использовать мотобокс на мотоцикле/мопеде.
+        is_motobox_required: boolean;
+        // Способ оплаты (если отличается от способа по умолчанию).
+        payment_method: PaymentMethod;
+        // Идентификатор привязанной банковской карты (обязателен для способа оплаты bank_card).
+        bank_card_id?: number;
+        // Промокод.
+        promo_code: string;
+        // Список адресов (точек) в заказе.
+        points: Point[];
+    }) {
+        return this.instance
+            .post<{
+                is_successful: boolean;
+                order: Order;
+                warnings: Warning[];
+                parameter_warnings: unknown;
+            }>('/calculate-order', data)
+            .then(response => response.data);
     }
 
     /** Создание заказа */
@@ -203,15 +251,3 @@ class Dostavista {
             .then(response => response.data);
     }
 }
-
-export {
-    Delivery,
-    DOSTAVISTA_BASE_URL_TEST,
-    DOSTAVISTA_BASE_URL,
-    Dostavista,
-    Order,
-    OrderStatus,
-    Point,
-    VehicleType,
-    Warning,
-};
